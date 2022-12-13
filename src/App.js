@@ -14,7 +14,7 @@ class App {
 }
 
 class RandomCount {
-  getCount () {
+  get getCount () {
     const computer = [];
     while (computer.length < 3) {
       const number = MissionUtils.Random.pickNumberInRange(1, 9);
@@ -22,7 +22,6 @@ class RandomCount {
         computer.push(number);
       }
     }
-    // console.log(computer)
     return computer;
   }
 }
@@ -34,14 +33,44 @@ class GameCourse {
 
   startText() {
     MissionUtils.Console.print('숫자 야구 게임을 시작합니다.');
-    // this.randomNum.getCount();
   }
 
   writeInput() {
     MissionUtils.Console.readLine('숫자를 입력해주세요 :', (answer) => {
-      MissionUtils.Console.print(answer);
-      
+      MissionUtils.Console.print(this.compareValue(answer, this.randomNum.getCount));
+      // return this.writeInput();
     });
+  }
+
+  strike(answer, randomNum) {
+    let count = 0;
+
+    randomNum.forEach((num, index) => {
+      if (num === +answer[index]) {
+        count++;
+      }
+    });
+
+    return count;
+  }
+
+  ball(answer, randomNum) {
+    let count = 0;
+
+    randomNum.forEach((num, index, numArr) => {
+      if (num !== +answer[index] && numArr.includes(+answer[index])) {
+        count++;
+      }
+    });
+
+    return count;
+  }
+
+  compareValue(answer, randomNum) {
+    let strike = this.strike(answer, randomNum);
+    let ball = this.ball(answer, randomNum)
+
+    console.log(strike, ball)
   }
 }
 
